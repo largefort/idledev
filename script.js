@@ -61,7 +61,7 @@ function updateGamePoints() {
   });
 }
 
-function exportSave() {
+function saveGame() {
   const saveData = {
     points: points,
     developers: developers,
@@ -69,25 +69,40 @@ function exportSave() {
   };
 
   const saveString = JSON.stringify(saveData);
-  document.getElementById("saveData").value = saveString;
+  localStorage.setItem("gameSave", saveString);
+
+  alert("Game saved successfully!");
 }
 
-function importSave() {
-  const saveString = document.getElementById("saveData").value;
-  
-  try {
-    const saveData = JSON.parse(saveString);
-    
-    points = saveData.points;
-    developers = saveData.developers;
-    games = saveData.games;
-    
-    updatePoints();
-    updateDevelopers();
-    updateGamePoints();
-    
-    alert("Save imported successfully!");
-  } catch (error) {
-    alert("Invalid save data!");
+function loadGame() {
+  const saveString = localStorage.getItem("gameSave");
+
+  if (saveString) {
+    try {
+      const saveData = JSON.parse(saveString);
+
+      points = saveData.points;
+      developers = saveData.developers;
+      games = saveData.games;
+
+      updatePoints();
+      updateDevelopers();
+      updateGamePoints();
+
+      alert("Game loaded successfully!");
+    } catch (error) {
+      alert("Invalid save data!");
+    }
+  } else {
+    alert("No saved game found!");
   }
 }
+
+// Initialize the game
+function initGame() {
+  updatePoints();
+  updateDevelopers();
+  updateGamePoints();
+}
+
+initGame();
