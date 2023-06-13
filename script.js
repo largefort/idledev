@@ -54,8 +54,11 @@ function createGame() {
   document.body.appendChild(gameContainer);
 }
 
-function updateGamePoints() {
+function generatePoints() {
   games.forEach((game, index) => {
+    const pointsGenerated = game.pointsPerDeveloper * developers;
+    game.pointsGenerated += pointsGenerated;
+
     const pointsGeneratedElement = document.getElementById(`pointsGenerated_${index}`);
     pointsGeneratedElement.textContent = game.pointsGenerated;
   });
@@ -102,7 +105,7 @@ function loadGame() {
 function initGame() {
   updatePoints();
   updateDevelopers();
-  updateGamePoints();
+  setInterval(generatePoints, 1000); // Call generatePoints() every second to earn points
 }
 
 initGame();
