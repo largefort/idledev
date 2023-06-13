@@ -110,3 +110,9 @@ setInterval(() => {
   updatePoints();
   updateGamePoints();
 }, 1000);
+
+    element.textContent = currentValue.toLocaleString('en-US', { notation: "compact" });
+
+    if (currentTime < endTime) {
+
+      requestAnimationFrame(update);
