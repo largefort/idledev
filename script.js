@@ -82,4 +82,12 @@ function importSave() {
     developers = saveData.developers;
     games = saveData.games;
     
-   
+    updatePoints();
+    updateDevelopers();
+    updateGamePoints();
+    
+    alert("Save imported successfully!");
+  } catch (error) {
+    alert("Invalid save data!");
+  }
+}
