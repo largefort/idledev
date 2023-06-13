@@ -54,58 +54,10 @@ function createGame() {
   document.body.appendChild(gameContainer);
 }
 
-function generatePoints() {
-  games.forEach((game, index) => {
-    const pointsGenerated = game.pointsPerDeveloper * developers;
-    game.pointsGenerated += pointsGenerated;
-
-    const pointsGeneratedElement = document.getElementById(`pointsGenerated_${index}`);
-    pointsGeneratedElement.textContent = game.pointsGenerated;
-  });
-}
-
-function saveGame() {
-  const saveData = {
-    points: points,
-    developers: developers,
-    games: games
-  };
-
-  const saveString = JSON.stringify(saveData);
-  localStorage.setItem("gameSave", saveString);
-
-  alert("Game saved successfully!");
-}
-
-function loadGame() {
-  const saveString = localStorage.getItem("gameSave");
-
-  if (saveString) {
-    try {
-      const saveData = JSON.parse(saveString);
-
-      points = saveData.points;
-      developers = saveData.developers;
-      games = saveData.games;
-
-      updatePoints();
-      updateDevelopers();
-      updateGamePoints();
-
-      alert("Game loaded successfully!");
-    } catch (error) {
-      alert("Invalid save data!");
-    }
-  } else {
-    alert("No saved game found!");
-  }
-}
-
 // Initialize the game
 function initGame() {
   updatePoints();
   updateDevelopers();
-  setInterval(generatePoints, 1000); // Call generatePoints() every second to earn points
 }
 
 initGame();
