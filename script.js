@@ -60,44 +60,41 @@ function updateGamePoints() {
     pointsGeneratedElement.textContent = game.pointsGenerated;
   });
 }
-function exportSave() {
-  const saveData = {
-    points: points,
-    developers: developers,
-    games: games
-  };
-
-  const saveString = JSON.stringify(saveData);
-  const encodedSave = btoa(saveString);
-  const exportData = `IdleGameSaveData:${encodedSave}`;
-
-  const saveElement = document.createElement("a");
-  saveElement.href = "data:text/plain;charset=utf-8," + encodeURIComponent(exportData);
-  saveElement.download = "idle_game_save.txt";
-  saveElement.click();
-}
-
 function importSave() {
-  const importData = document.getElementById("importSaveInput").value;
+  const fileInput = document.getElementById("importSaveInput");
+  const file = fileInput.files[0];
   
-  if (!importData.startsWith("IdleGameSaveData:")) {
-    alert("Invalid save data!");
+  if (!file) {
+    alert("No file selected!");
     return;
   }
 
-  const encodedSave = importData.replace("IdleGameSaveData:", "");
-  const saveString = atob(encodedSave);
-  const saveData = JSON.parse(saveString);
+  const reader = new FileReader();
 
-  points = saveData.points;
-  developers = saveData.developers;
-  games = saveData.games;
+  reader.onload = function(event) {
+    const importData = event.target.result;
 
-  updatePoints();
-  updateDevelopers();
-  updateGamePoints();
+    if (!importData.startsWith("IdleGameSaveData:")) {
+      alert("Invalid save data!");
+      return;
+    }
 
-  document.getElementById("importSaveInput").value = "";
+    const encodedSave = importData.replace("IdleGameSaveData:", "");
+    const saveString = atob(encodedSave);
+    const saveData = JSON.parse(saveString);
+
+    points = saveData.points;
+    developers = saveData.developers;
+    games = saveData.games;
+
+    updatePoints();
+    updateDevelopers();
+    updateGamePoints();
+
+    fileInput.value = ""; // Reset the file input
+  };
+
+  reader.readAsText(file, "UTF-8");
 }
 
 
