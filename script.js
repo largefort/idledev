@@ -61,14 +61,25 @@ function updateGamePoints() {
   });
 }
 
-// Automatic points generation by developers every second
-setInterval(function() {
-  points += developers;
+function exportSave() {
+  const saveData = {
+    points: points,
+    developers: developers,
+    games: games
+  };
+
+  const saveString = JSON.stringify(saveData);
+  document.getElementById("saveData").value = saveString;
+}
+
+function importSave() {
+  const saveString = document.getElementById("saveData").value;
   
-  games.forEach((game) => {
-    game.pointsGenerated += game.pointsPerDeveloper * developers;
-  });
-  
-  updatePoints();
-  updateGamePoints();
-}, 1000);
+  try {
+    const saveData = JSON.parse(saveString);
+    
+    points = saveData.points;
+    developers = saveData.developers;
+    games = saveData.games;
+    
+   
