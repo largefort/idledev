@@ -1,6 +1,12 @@
 body {
   text-align: center;
   font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+}
+
+h1 {
+  margin-top: 30px;
+  color: #007bff;
 }
 
 .container {
@@ -12,13 +18,35 @@ body {
 .points,
 .developers,
 .game {
-  border: 1px solid #000;
-  padding: 10px;
-  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 button {
-  margin-top: 10px;
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
 }
 
 h2 span {
@@ -27,8 +55,16 @@ h2 span {
 }
 
 .game-container {
-  border: 1px solid #000;
-  padding: 10px;
+  border: 1px solid #ccc;
+  padding: 20px;
   margin: 10px auto;
   max-width: 300px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.game-container:hover {
+  transform: scale(1.05);
 }
