@@ -60,45 +60,23 @@ const updateGamePoints = () => {
   });
 };
 
-const exportSave = () => {
+const autosaveInterval = 5000; // Autosave every 5 seconds
+
+const autosave = () => {
   const saveData = {
     points: points,
     developers: developers,
     games: games
   };
 
-  const saveString = JSON.stringify(saveData);
-  const encodedSave = btoa(saveString);
-  const exportData = `IdleGameSaveData:${encodedSave}`;
-
-  const saveElement = document.createElement("a");
-  saveElement.href = "data:text/plain;charset=utf-8," + encodeURIComponent(exportData);
-  saveElement.download = "idle_game_save.txt";
-  saveElement.click();
+  localStorage.setItem("idleGameSave", JSON.stringify(saveData));
 };
 
-const importSave = () => {
-  const fileInput = document.getElementById("importSaveInput");
-  const file = fileInput.files[0];
+const loadGame = () => {
+  const saveDataString = localStorage.getItem("idleGameSave");
 
-  if (!file) {
-    alert("No file selected!");
-    return;
-  }
-
-  const reader = new FileReader();
-
-  reader.onload = function(event) {
-    const importData = event.target.result;
-
-    if (!importData.startsWith("IdleGameSaveData:")) {
-      alert("Invalid save data!");
-      return;
-    }
-
-    const encodedSave = importData.replace("IdleGameSaveData:", "");
-    const saveString = atob(encodedSave);
-    const saveData = JSON.parse(saveString);
+  if (saveDataString) {
+    const saveData = JSON.parse(saveDataString);
 
     points = saveData.points;
     developers = saveData.developers;
@@ -107,24 +85,11 @@ const importSave = () => {
     updatePoints();
     updateDevelopers();
     updateGamePoints();
-
-    fileInput.value = ""; // Reset the file input
-
-    // Display imported games
-    games.forEach((game) => {
-      const gameContainer = document.createElement("div");
-      gameContainer.className = "game-container";
-      gameContainer.innerHTML = `
-        <h3>${game.name}</h3>
-        <p>Points Generated: <span id="pointsGenerated_${games.length - 1}">${game.pointsGenerated}</span></p>
-      `;
-
-      document.body.appendChild(gameContainer);
-    });
-  };
-
-  reader.readAsText(file, "UTF-8");
+  }
 };
+
+// Load game data on page load
+window.addEventListener("load", loadGame);
 
 // Automatic points generation by developers every second
 setInterval(() => {
@@ -137,3 +102,6 @@ setInterval(() => {
   updatePoints();
   updateGamePoints();
 }, 1000);
+
+// Autosave timer
+setInterval(autosave, autosaveInterval);
