@@ -60,7 +60,6 @@ function updateGamePoints() {
     pointsGeneratedElement.textContent = game.pointsGenerated;
   });
 }
-
 function exportSave() {
   const saveData = {
     points: points,
@@ -100,6 +99,7 @@ function importSave() {
 
   document.getElementById("importSaveInput").value = "";
 }
+
 
 // Automatic points generation by developers every second
 setInterval(function() {
