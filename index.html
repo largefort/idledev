@@ -8,20 +8,20 @@
   <h1>Idle Game Developer Simulation</h1>
   
   <div class="container">
-    <div class="game-creation">
+    <div class="points">
+      <h2>Points: <span id="points">0</span></h2>
+      <button onclick="incrementPoints()">Click Me!</button>
+    </div>
+    
+    <div class="developers">
+      <h2>Developers: <span id="developers">0</span></h2>
+      <button onclick="hireDeveloper()">Hire Developer (Cost: 10 points)</button>
+    </div>
+    
+    <div class="game">
       <h2>Create a Game:</h2>
       <input type="text" id="gameName" placeholder="Game Name">
       <button onclick="createGame()">Create Game</button>
-    </div>
-
-    <div class="game-list" id="gameList">
-      <h2>Games:</h2>
-    </div>
-
-    <div class="resources">
-      <h2>Resources:</h2>
-      <p>Points: <span id="points">0</span></p>
-      <p>Developers: <span id="developers">0</span></p>
     </div>
   </div>
 
