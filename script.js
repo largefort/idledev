@@ -2,9 +2,18 @@ let points = 0;
 let developers = 0;
 let games = [];
 
-const updatePoints = () => document.getElementById("points").textContent = points;
-const incrementPoints = () => { points++; updatePoints(); };
-const updateDevelopers = () => document.getElementById("developers").textContent = developers;
+const updatePoints = () => {
+  document.getElementById("points").textContent = points;
+};
+
+const incrementPoints = () => {
+  points++;
+  updatePoints();
+};
+
+const updateDevelopers = () => {
+  document.getElementById("developers").textContent = developers;
+};
 
 const hireDeveloper = () => {
   if (points >= 10) {
@@ -19,28 +28,28 @@ const hireDeveloper = () => {
 
 const createGame = () => {
   const gameName = document.getElementById("gameName").value.trim();
-  
+
   if (gameName === "") {
     alert("Please enter a game name!");
     return;
   }
-  
+
   const game = {
     name: gameName,
     pointsPerDeveloper: 2,
     pointsGenerated: 0
   };
-  
+
   games.push(game);
   document.getElementById("gameName").value = "";
-  
+
   const gameContainer = document.createElement("div");
   gameContainer.className = "game-container";
   gameContainer.innerHTML = `
     <h3>${game.name}</h3>
     <p>Points Generated: <span id="pointsGenerated_${games.length - 1}">0</span></p>
   `;
-  
+
   document.body.appendChild(gameContainer);
 };
 
@@ -52,13 +61,18 @@ const updateGamePoints = () => {
 };
 
 const exportSave = () => {
-  const saveData = { points, developers, games };
+  const saveData = {
+    points: points,
+    developers: developers,
+    games: games
+  };
+
   const saveString = JSON.stringify(saveData);
   const encodedSave = btoa(saveString);
   const exportData = `IdleGameSaveData:${encodedSave}`;
-  
+
   const saveElement = document.createElement("a");
-  saveElement.href = `data:text/plain;charset=utf-8,${encodeURIComponent(exportData)}`;
+  saveElement.href = "data:text/plain;charset=utf-8," + encodeURIComponent(exportData);
   saveElement.download = "idle_game_save.txt";
   saveElement.click();
 };
@@ -66,53 +80,60 @@ const exportSave = () => {
 const importSave = () => {
   const fileInput = document.getElementById("importSaveInput");
   const file = fileInput.files[0];
-  
+
   if (!file) {
     alert("No file selected!");
     return;
   }
-  
+
   const reader = new FileReader();
-  
-  reader.onload = (event) => {
+
+  reader.onload = function(event) {
     const importData = event.target.result;
-    
+
     if (!importData.startsWith("IdleGameSaveData:")) {
       alert("Invalid save data!");
       return;
     }
-    
+
     const encodedSave = importData.replace("IdleGameSaveData:", "");
     const saveString = atob(encodedSave);
     const saveData = JSON.parse(saveString);
-    
+
     points = saveData.points;
     developers = saveData.developers;
     games = saveData.games;
-    
+
     updatePoints();
     updateDevelopers();
     updateGamePoints();
-    
+
     fileInput.value = ""; // Reset the file input
+
+    // Display imported games
+    games.forEach((game) => {
+      const gameContainer = document.createElement("div");
+      gameContainer.className = "game-container";
+      gameContainer.innerHTML = `
+        <h3>${game.name}</h3>
+        <p>Points Generated: <span id="pointsGenerated_${games.length - 1}">${game.pointsGenerated}</span></p>
+      `;
+
+      document.body.appendChild(gameContainer);
+    });
   };
-  
+
   reader.readAsText(file, "UTF-8");
 };
 
+// Automatic points generation by developers every second
 setInterval(() => {
   points += developers;
-  
+
   games.forEach((game) => {
     game.pointsGenerated += game.pointsPerDeveloper * developers;
   });
-  
+
   updatePoints();
   updateGamePoints();
 }, 1000);
-
-    element.textContent = currentValue.toLocaleString('en-US', { notation: "compact" });
-
-    if (currentTime < endTime) {
-
-      requestAnimationFrame(update);
