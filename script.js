@@ -60,6 +60,24 @@ function updateGamePoints() {
     pointsGeneratedElement.textContent = game.pointsGenerated;
   });
 }
+
+function exportSave() {
+  const saveData = {
+    points: points,
+    developers: developers,
+    games: games
+  };
+
+  const saveString = JSON.stringify(saveData);
+  const encodedSave = btoa(saveString);
+  const exportData = `IdleGameSaveData:${encodedSave}`;
+
+  const saveElement = document.createElement("a");
+  saveElement.href = "data:text/plain;charset=utf-8," + encodeURIComponent(exportData);
+  saveElement.download = "idle_game_save.txt";
+  saveElement.click();
+}
+
 function importSave() {
   const fileInput = document.getElementById("importSaveInput");
   const file = fileInput.files[0];
@@ -96,7 +114,6 @@ function importSave() {
 
   reader.readAsText(file, "UTF-8");
 }
-
 
 // Automatic points generation by developers every second
 setInterval(function() {
