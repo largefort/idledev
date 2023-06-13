@@ -54,6 +54,64 @@ function createGame() {
   document.body.appendChild(gameContainer);
 }
 
+function exportSave() {
+  const saveData = {
+    points: points,
+    developers: developers,
+    games: games
+  };
+
+  const saveString = JSON.stringify(saveData);
+  const blob = new Blob([saveString], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "gameSave.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importSave() {
+  const fileInput = document.getElementById("importSave");
+  const file = fileInput.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      try {
+        const saveData = JSON.parse(event.target.result);
+        points = saveData.points;
+        developers = saveData.developers;
+        games = saveData.games;
+
+        // Update the UI
+        updatePoints();
+        updateDevelopers();
+
+        // Recreate game containers
+        for (let i = 0; i < games.length; i++) {
+          const game = games[i];
+
+          const gameContainer = document.createElement("div");
+          gameContainer.className = "game-container";
+          gameContainer.innerHTML = `
+            <h3>${game.name}</h3>
+            <p>Points Generated: <span id="pointsGenerated_${i}">${game.pointsGenerated}</span></p>
+          `;
+
+          document.body.appendChild(gameContainer);
+        }
+
+        alert("Save imported successfully!");
+      } catch (error) {
+        console.error("Invalid save file.");
+        alert("Invalid save file. Please select a valid game save file.");
+      }
+    };
+    reader.readAsText(file);
+  }
+}
+
 // Initialize the game
 function initGame() {
   updatePoints();
