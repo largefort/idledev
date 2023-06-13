@@ -38,8 +38,6 @@ function createGame() {
 
   const game = {
     name: gameName,
-    pointsPerDeveloper: 2,
-    pointsGenerated: 0,
     players: 0,
     revenue: 0
   };
@@ -47,19 +45,8 @@ function createGame() {
   games.push(game);
   document.getElementById("gameName").value = "";
 
-  // Display the created game
-  const gameContainer = document.createElement("div");
-  gameContainer.className = "game-container";
-  gameContainer.innerHTML = `
-    <h3>${game.name}</h3>
-    <p>Points Generated: <span id="pointsGenerated_${games.length - 1}">0</span></p>
-    <p>Players: <span id="players_${games.length - 1}">0</span></p>
-    <p>Revenue: $<span id="revenue_${games.length - 1}">0</span></p>
-  `;
-
-  document.body.appendChild(gameContainer);
-
   updateGameStats();
+  displayGames();
 }
 
 function updateGameStats() {
@@ -80,11 +67,53 @@ function updateGameStats() {
   document.getElementById("totalRevenue").textContent = totalRevenue;
 }
 
+function incrementGameRevenue(index) {
+  const game = games[index];
+  const pointsPerPlayer = 10;
+  const players = game.players;
+
+  const revenue = players * pointsPerPlayer;
+  game.revenue += revenue;
+
+  updateGameStats();
+  displayGames();
+}
+
+function addPlayer(index) {
+  const game = games[index];
+  game.players++;
+
+  updateGameStats();
+  displayGames();
+}
+
+function displayGames() {
+  const gameList = document.getElementById("gameList");
+  gameList.innerHTML = "";
+
+  for (let i = 0; i < games.length; i++) {
+    const game = games[i];
+
+    const gameItem = document.createElement("div");
+    gameItem.className = "game-item";
+    gameItem.innerHTML = `
+      <h3>${game.name}</h3>
+      <p>Players: ${game.players}</p>
+      <p>Revenue: $${game.revenue}</p>
+      <button onclick="addPlayer(${i})">Add Player</button>
+      <button onclick="incrementGameRevenue(${i})">Increment Revenue</button>
+    `;
+
+    gameList.appendChild(gameItem);
+  }
+}
+
 // Initialize the game
 function initGame() {
   updatePoints();
   updateDevelopers();
   updateGameStats();
+  displayGames();
 }
 
 initGame();
