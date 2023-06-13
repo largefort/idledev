@@ -10,9 +10,11 @@ body {
 }
 
 .points,
-.developers {
+.developers,
+.game {
   border: 1px solid #000;
   padding: 10px;
+  margin-bottom: 10px;
 }
 
 button {
@@ -22,4 +24,11 @@ button {
 h2 span {
   font-weight: normal;
   color: #007bff;
+}
+
+.game-container {
+  border: 1px solid #000;
+  padding: 10px;
+  margin: 10px auto;
+  max-width: 300px;
 }
