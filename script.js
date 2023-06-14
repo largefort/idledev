@@ -206,9 +206,3 @@ function requestFullscreen(element) {
     element.msRequestFullscreen();
   }
 }
-
-// Trigger fullscreen on page load
-window.addEventListener('load', function() {
-  const gameContainer = document.getElementById('gameContainer');
-  requestFullscreen(gameContainer);
-});
