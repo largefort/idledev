@@ -1,6 +1,10 @@
 let points = 0;
 let developers = 0;
 let games = [];
+let upgrades = {
+  1: { cost: 10, pointsPerSecond: 1 },
+  2: { cost: 20, unlockAbility: true }
+};
 
 function updatePoints() {
   document.getElementById("points").textContent = points;
@@ -52,8 +56,6 @@ function createGame() {
   `;
   
   document.body.appendChild(gameContainer);
-  
-  autosave();
 }
 
 function updateGamePoints() {
@@ -63,29 +65,31 @@ function updateGamePoints() {
   });
 }
 
-function autosave() {
-  const saveData = {
-    points: points,
-    developers: developers,
-    games: games
-  };
-  
-  localStorage.setItem("idleGameSave", JSON.stringify(saveData));
-}
-
-function loadSave() {
-  const saveData = localStorage.getItem("idleGameSave");
-  
-  if (saveData) {
-    const save = JSON.parse(saveData);
-    
-    points = save.points;
-    developers = save.developers;
-    games = save.games;
-    
+function purchaseUpgrade(upgradeId) {
+  const upgrade = upgrades[upgradeId];
+  if (points >= upgrade.cost) {
+    points -= upgrade.cost;
     updatePoints();
-    updateDevelopers();
-    updateGamePoints();
+
+    // Apply the upgrade
+    if (upgrade.pointsPerSecond) {
+      // Increase points generation per second
+      games.forEach((game) => {
+        game.pointsGenerated += upgrade.pointsPerSecond * developers;
+      });
+      updateGamePoints();
+    }
+
+    if (upgrade.unlockAbility) {
+      // Unlock a new ability (you can define the logic for the ability)
+      // ...
+    }
+
+    // Update upgrade cost (optional)
+    upgrade.cost *= 2;
+    document.getElementById(`upgrade${upgradeId}Cost`).textContent = upgrade.cost;
+  } else {
+    alert("Insufficient points to purchase the upgrade!");
   }
 }
 
@@ -99,9 +103,4 @@ setInterval(function() {
   
   updatePoints();
   updateGamePoints();
-  
-  autosave();
 }, 1000);
-
-// Load the saved data on page load
-loadSave();
