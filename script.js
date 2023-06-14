@@ -151,7 +151,46 @@ setInterval(function() {
   updateGamePoints();
 }, 1000);
 
+// Autosave feature
+setInterval(function() {
+  saveGame();
+}, 5000);
+
+// Save game data
+function saveGame() {
+  const saveData = {
+    points: points,
+    developers: developers,
+    games: games,
+    achievements: achievements
+  };
+
+  localStorage.setItem("idleGameSave", JSON.stringify(saveData));
+}
+
+// Load saved game data
+function loadGame() {
+  const saveData = localStorage.getItem("idleGameSave");
+
+  if (saveData) {
+    const data = JSON.parse(saveData);
+    points = data.points;
+    developers = data.developers;
+    games = data.games;
+    achievements = data.achievements;
+
+    updatePoints();
+    updateDevelopers();
+    updateGamePoints();
+  }
+}
+
 // Initialize achievements
 for (let i = 0; i < 3; i++) {
   achievements.push(generateAchievement());
 }
+
+// Load saved game data on page load
+window.addEventListener("load", function() {
+  loadGame();
+});
