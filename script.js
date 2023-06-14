@@ -2,20 +2,20 @@ let points = 0;
 let developers = 0;
 let games = [];
 
-const updatePoints = () => {
+function updatePoints() {
   document.getElementById("points").textContent = points;
-};
+}
 
-const incrementPoints = () => {
+function incrementPoints() {
   points++;
   updatePoints();
-};
+}
 
-const updateDevelopers = () => {
+function updateDevelopers() {
   document.getElementById("developers").textContent = developers;
-};
+}
 
-const hireDeveloper = () => {
+function hireDeveloper() {
   if (points >= 10) {
     points -= 10;
     developers++;
@@ -24,84 +24,84 @@ const hireDeveloper = () => {
   } else {
     alert("Insufficient points to hire a developer!");
   }
-};
+}
 
-const createGame = () => {
-  const gameName = document.getElementById("gameName").value.trim();
-
-  if (gameName === "") {
+function createGame() {
+  const gameName = document.getElementById("gameName").value;
+  
+  if (gameName.trim() === "") {
     alert("Please enter a game name!");
     return;
   }
-
+  
   const game = {
     name: gameName,
     pointsPerDeveloper: 2,
     pointsGenerated: 0
   };
-
+  
   games.push(game);
   document.getElementById("gameName").value = "";
-
+  
+  // Display the created game
   const gameContainer = document.createElement("div");
   gameContainer.className = "game-container";
   gameContainer.innerHTML = `
     <h3>${game.name}</h3>
     <p>Points Generated: <span id="pointsGenerated_${games.length - 1}">0</span></p>
   `;
-
+  
   document.body.appendChild(gameContainer);
-};
+  
+  autosave();
+}
 
-const updateGamePoints = () => {
+function updateGamePoints() {
   games.forEach((game, index) => {
     const pointsGeneratedElement = document.getElementById(`pointsGenerated_${index}`);
     pointsGeneratedElement.textContent = game.pointsGenerated;
   });
-};
+}
 
-const autosaveInterval = 5000; // Autosave every 5 seconds
-
-const autosave = () => {
+function autosave() {
   const saveData = {
     points: points,
     developers: developers,
     games: games
   };
-
+  
   localStorage.setItem("idleGameSave", JSON.stringify(saveData));
-};
+}
 
-const loadGame = () => {
-  const saveDataString = localStorage.getItem("idleGameSave");
-
-  if (saveDataString) {
-    const saveData = JSON.parse(saveDataString);
-
-    points = saveData.points;
-    developers = saveData.developers;
-    games = saveData.games;
-
+function loadSave() {
+  const saveData = localStorage.getItem("idleGameSave");
+  
+  if (saveData) {
+    const save = JSON.parse(saveData);
+    
+    points = save.points;
+    developers = save.developers;
+    games = save.games;
+    
     updatePoints();
     updateDevelopers();
     updateGamePoints();
   }
-};
-
-// Load game data on page load
-window.addEventListener("load", loadGame);
+}
 
 // Automatic points generation by developers every second
-setInterval(() => {
+setInterval(function() {
   points += developers;
-
+  
   games.forEach((game) => {
     game.pointsGenerated += game.pointsPerDeveloper * developers;
   });
-
+  
   updatePoints();
   updateGamePoints();
+  
+  autosave();
 }, 1000);
 
-// Autosave timer
-setInterval(autosave, autosaveInterval);
+// Load the saved data on page load
+loadSave();
