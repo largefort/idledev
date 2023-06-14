@@ -13,29 +13,6 @@
   border-radius: 5px;
 }
 
-.upgrades {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.upgrade-list {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.upgrade {
-  text-align: center;
-  padding: 20px;
-  background-color: #f0f0f0;
-  border-radius: 5px;
-  width: 200px;
-}
-
-.upgrade button {
-  margin-top: 10px;
-}
-
 .game-container {
   text-align: center;
   padding: 20px;
@@ -44,24 +21,19 @@
   margin-bottom: 10px;
 }
 
-.save-load {
-  text-align: center;
-}
-
-h1, h2, h3 {
-  color: #333;
-}
-
-button {
+.achievement-notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   padding: 10px 20px;
-  font-size: 16px;
   background-color: #4CAF50;
   color: white;
-  border: none;
   border-radius: 5px;
-  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
 }
 
-button:hover {
-  background-color: #45a049;
+.achievement-notification.show {
+  opacity: 1;
 }
