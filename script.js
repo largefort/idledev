@@ -1,7 +1,6 @@
 let points = 0;
 let developers = 0;
 let games = [];
-let achievements = [];
 
 function updatePoints() {
   document.getElementById("points").textContent = points;
@@ -9,7 +8,6 @@ function updatePoints() {
 
 function incrementPoints() {
   points++;
-  checkAchievements();
   updatePoints();
 }
 
@@ -21,7 +19,6 @@ function hireDeveloper() {
   if (points >= 10) {
     points -= 10;
     developers++;
-    checkAchievements();
     updatePoints();
     updateDevelopers();
   } else {
@@ -45,60 +42,52 @@ function createGame() {
   
   games.push(game);
   document.getElementById("gameName").value = "";
-
-  updateGameList();
-  checkAchievements();
+  
+  // Display the created game
+  const gameContainer = document.createElement("div");
+  gameContainer.className = "game-container";
+  gameContainer.innerHTML = `
+    <h3>${game.name}</h3>
+    <p>Points Generated: <span id="pointsGenerated_${games.length - 1}">0</span></p>
+  `;
+  
+  document.body.appendChild(gameContainer);
+  
+  autosave();
 }
 
-function updateGameList() {
-  const gameListElement = document.getElementById("gameList");
-  gameListElement.innerHTML = "";
-
+function updateGamePoints() {
   games.forEach((game, index) => {
-    const gameItem = document.createElement("div");
-    gameItem.className = "game-item";
-    gameItem.innerHTML = `
-      <h3>${game.name}</h3>
-      <p>Points Generated: <span>${game.pointsGenerated}</span></p>
-    `;
-
-    gameListElement.appendChild(gameItem);
+    const pointsGeneratedElement = document.getElementById(`pointsGenerated_${index}`);
+    pointsGeneratedElement.textContent = game.pointsGenerated;
   });
 }
 
-function checkAchievements() {
-  achievements.forEach((achievement) => {
-    if (!achievement.unlocked && achievement.goal()) {
-      achievement.unlocked = true;
-      showAchievementNotification(achievement.name);
-    }
-  });
+function autosave() {
+  const saveData = {
+    points: points,
+    developers: developers,
+    games: games
+  };
+  
+  localStorage.setItem("idleGameSave", JSON.stringify(saveData));
 }
 
-function showAchievementNotification(achievementName) {
-  const notificationElement = document.getElementById("achievementNotification");
-  notificationElement.textContent = `Achievement Unlocked: ${achievementName}`;
-  notificationElement.style.display = "block";
-
-  setTimeout(() => {
-    notificationElement.style.display = "none";
-  }, 2000);
+function loadSave() {
+  const saveData = localStorage.getItem("idleGameSave");
+  
+  if (saveData) {
+    const save = JSON.parse(saveData);
+    
+    points = save.points;
+    developers = save.developers;
+    games = save.games;
+    
+    updatePoints();
+    updateDevelopers();
+    updateGamePoints();
+  }
 }
-
-// Achievement Definitions
-const achievement1 = {
-  name: "Click Master",
-  goal: () => points >= 100,
-  unlocked: false
-};
-
-const achievement2 = {
-  name: "Developer Power",
-  goal: () => developers >= 5,
-  unlocked: false
-};
-
-achievements.push(achievement1, achievement2);
 
 // Automatic points generation by developers every second
 setInterval(function() {
@@ -108,17 +97,11 @@ setInterval(function() {
     game.pointsGenerated += game.pointsPerDeveloper * developers;
   });
   
-  checkAchievements();
   updatePoints();
-  updateGameList();
+  updateGamePoints();
+  
+  autosave();
 }, 1000);
 
-// Autosave every 5 seconds
-setInterval(function() {
-  exportSave();
-}, 5000);
-
-// Load saved data on page load
-window.addEventListener("load", function() {
-  importSave();
-});
+// Load the saved data on page load
+loadSave();
