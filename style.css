@@ -6,16 +6,19 @@ body {
 h1 {
   text-align: center;
   color: #333;
+  margin-top: 20px;
 }
 
 .container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .box {
+  width: 300px;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -56,26 +59,8 @@ h1 {
   background-color: #45a049;
 }
 
-.save-load {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.save-load h2 {
-  color: #333;
-}
-
-.save-load button {
-  background-color: #008CBA;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.save-load button:hover {
-  background-color: #007a8c;
+@media (max-width: 480px) {
+  .box {
+    width: 100%;
+  }
 }
