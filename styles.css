@@ -61,3 +61,13 @@ h1 {
 .game-list h2 {
   margin-top: 0;
 }
+
+/* Mobile-friendly styles */
+
+@media only screen and (max-width: 600px) {
+  .box {
+    flex-basis: 100%;
+    max-width: 100%;
+    margin: 10px 0;
+  }
+}
