@@ -94,3 +94,11 @@ h1 {
 .box:after, .game-list:after {
   transform: rotateX(-20deg) rotateY(5deg);
 }
+
+/* Media Queries */
+
+@media only screen and (max-width: 600px) {
+  .box, .game-list {
+    max-width: 100%;
+  }
+}
