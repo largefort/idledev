@@ -10,6 +10,7 @@ h1 {
 
 .container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 20px;
 }
@@ -60,42 +61,13 @@ h1 {
 .game-list h2 {
   margin-top: 0;
 }
-/* Additional 3D Effects */
-
-.container {
-  perspective: 800px;
-}
-
-.box, .game-list {
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-}
-
-.box:before, .box:after, .game-list:before, .game-list:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1));
-  pointer-events: none;
-  opacity: 0.5;
-  z-index: -1;
-}
-
-.box:before, .game-list:before {
-  transform: rotateX(20deg) rotateY(-5deg);
-}
-
-.box:after, .game-list:after {
-  transform: rotateX(-20deg) rotateY(5deg);
-}
 
 /* Media Queries */
 
-@media only screen and (max-width: 360px) {
-  .box, .game-list {
+@media only screen and (max-width: 600px) {
+  .box {
+    flex-basis: 100%;
     max-width: 100%;
+    margin: 10px 0;
   }
 }
