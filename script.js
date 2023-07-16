@@ -21,6 +21,7 @@ function hireDeveloper() {
     developers++;
     updatePoints();
     updateDevelopers();
+    saveData();
   } else {
     alert("Insufficient points to hire a developer!");
   }
@@ -53,7 +54,7 @@ function createGame() {
 
   document.body.appendChild(gameContainer);
 
-  autosave();
+  saveData();
 }
 
 function updateGamePoints() {
@@ -63,7 +64,7 @@ function updateGamePoints() {
   });
 }
 
-function autosave() {
+function saveData() {
   const saveData = {
     points: points,
     developers: developers,
@@ -73,7 +74,7 @@ function autosave() {
   localStorage.setItem("idleGameSave", JSON.stringify(saveData));
 }
 
-function loadSave() {
+function loadData() {
   const saveData = localStorage.getItem("idleGameSave");
 
   if (saveData) {
@@ -99,9 +100,7 @@ setInterval(function() {
 
   updatePoints();
   updateGamePoints();
-
-  autosave();
 }, 1000);
 
 // Load the saved data on page load
-loadSave();
+loadData();
