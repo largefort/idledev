@@ -2,64 +2,91 @@ let points = 0;
 let developers = 0;
 let games = [];
 
+// Elements
+const pointsElement = document.getElementById("points");
+const developersElement = document.getElementById("developers");
+const gameListElement = document.getElementById("gameList");
+
+// Update Points
 function updatePoints() {
-  document.getElementById("points").textContent = points;
+  pointsElement.textContent = points;
 }
 
+// Increment Points
+function incrementPoints() {
+  points++;
+  updatePoints();
+}
+
+// Update Developers
 function updateDevelopers() {
-  document.getElementById("developers").textContent = developers;
+  developersElement.textContent = developers;
 }
 
+// Hire Developer
 function hireDeveloper() {
   if (points >= 10) {
     points -= 10;
     developers++;
     updatePoints();
     updateDevelopers();
-    saveData();
   } else {
     alert("Insufficient points to hire a developer!");
   }
 }
 
+// Create Game
 function createGame() {
-  const gameName = document.getElementById("gameName").value;
-
-  if (gameName.trim() === "") {
+  const gameName = document.getElementById("gameName").value.trim();
+  
+  if (gameName === "") {
     alert("Please enter a game name!");
     return;
   }
-
+  
   const game = {
     name: gameName,
     pointsPerDeveloper: 2,
     pointsGenerated: 0
   };
-
+  
   games.push(game);
   document.getElementById("gameName").value = "";
 
-  // Display the created game
-  const gameContainer = document.createElement("div");
-  gameContainer.className = "game-container";
-  gameContainer.innerHTML = `
-    <h3>${game.name}</h3>
-    <p>Points Generated: <span id="pointsGenerated_${games.length - 1}">0</span></p>
-  `;
-
-  document.body.appendChild(gameContainer);
-
-  saveData();
+  updateGameList();
 }
 
-function updateGamePoints() {
+// Update Game List
+function updateGameList() {
+  gameListElement.innerHTML = "";
+
   games.forEach((game, index) => {
-    const pointsGeneratedElement = document.getElementById(`pointsGenerated_${index}`);
-    pointsGeneratedElement.textContent = game.pointsGenerated;
+    const gameItem = document.createElement("li");
+    gameItem.textContent = `${game.name} (Points Generated: ${game.pointsGenerated})`;
+
+    gameListElement.appendChild(gameItem);
   });
 }
 
-function saveData() {
+// Automatic points generation by developers every second
+setInterval(function() {
+  points += developers;
+  
+  games.forEach((game) => {
+    game.pointsGenerated += game.pointsPerDeveloper * developers;
+  });
+  
+  updatePoints();
+  updateGameList();
+}, 1000);
+
+// Autosave every 5 seconds
+setInterval(function() {
+  saveGame();
+}, 5000);
+
+// Save game data
+function saveGame() {
   const saveData = {
     points: points,
     developers: developers,
@@ -69,33 +96,23 @@ function saveData() {
   localStorage.setItem("idleGameSave", JSON.stringify(saveData));
 }
 
-function loadData() {
+// Load saved game data
+function loadGame() {
   const saveData = localStorage.getItem("idleGameSave");
 
   if (saveData) {
-    const save = JSON.parse(saveData);
-
-    points = save.points;
-    developers = save.developers;
-    games = save.games;
+    const data = JSON.parse(saveData);
+    points = data.points;
+    developers = data.developers;
+    games = data.games;
 
     updatePoints();
     updateDevelopers();
-    updateGamePoints();
+    updateGameList();
   }
 }
 
-// Automatic points generation by developers every second
-setInterval(function() {
-  points += developers;
-
-  games.forEach((game) => {
-    game.pointsGenerated += game.pointsPerDeveloper * developers;
-  });
-
-  updatePoints();
-  updateGamePoints();
-}, 1000);
-
-// Load the saved data on page load
-loadData();
+// Load saved game data on page load
+window.addEventListener("load", function() {
+  loadGame();
+});
