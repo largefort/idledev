@@ -6,11 +6,6 @@ function updatePoints() {
   document.getElementById("points").textContent = points;
 }
 
-function incrementPoints() {
-  points++;
-  updatePoints();
-}
-
 function updateDevelopers() {
   document.getElementById("developers").textContent = developers;
 }
