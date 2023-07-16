@@ -97,7 +97,7 @@ h1 {
 
 /* Media Queries */
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 360px) {
   .box, .game-list {
     max-width: 100%;
   }
