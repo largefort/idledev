@@ -94,13 +94,11 @@ h1 {
 .box:after, .game-list:after {
   transform: rotateX(-20deg) rotateY(5deg);
 }
-/* Media Queries for Android Screens */
-@media only screen and (min-width: 320px) and (max-width: 480px) {
-  .container {
-    flex-wrap: wrap;
-  }
-  
-  .box {
-    flex: 0 0 100%;
+
+/* Media Queries */
+
+@media only screen and (max-width: 600px) {
+  .box, .game-list {
     max-width: 100%;
-    margin-bottom: 20px;
+  }
+}
