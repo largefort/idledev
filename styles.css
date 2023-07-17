@@ -4,6 +4,14 @@ body {
   background-color: #f8f8f8;
 }
 
+body.low-resolution {
+  font-size: 14px;
+}
+
+body.hd-resolution {
+  font-size: 16px;
+}
+
 h1 {
   margin-bottom: 20px;
   color: #333; /* Added color for the heading */
