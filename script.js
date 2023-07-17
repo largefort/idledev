@@ -2,6 +2,7 @@ let points = 0;
 let developers = 0;
 let games = [];
 let isHDMode = false; // Variable to track HD Mode
+let pointsPerHour = 0;
 
 // Elements
 const pointsElement = document.getElementById("points");
@@ -11,6 +12,8 @@ const gameListElement = document.getElementById("gameList");
 // Update Points
 function updatePoints() {
   pointsElement.textContent = formatPoints(points);
+  pointsPerHour = calculatePointsPerHour();
+  document.getElementById("pointsPerHour").textContent = formatPoints(pointsPerHour);
 }
 
 // Format Points
@@ -27,6 +30,8 @@ function incrementPoints() {
 // Update Developers
 function updateDevelopers() {
   developersElement.textContent = formatPoints(developers);
+  pointsPerHour = calculatePointsPerHour();
+  document.getElementById("pointsPerHour").textContent = formatPoints(pointsPerHour);
 }
 
 // Hire Developer
@@ -117,7 +122,6 @@ function loadGame() {
     updateGameList();
   }
 }
-// ...
 
 // Toggle HD Mode
 function toggleHDMode() {
@@ -138,9 +142,12 @@ function toggleHDMode() {
   bodyElement.classList.add(isHDMode ? "hd-resolution" : "low-resolution");
 }
 
-// ...
-
 // Load saved game data on page load
 window.addEventListener("load", function() {
   loadGame();
 });
+
+// Calculate Points per Hour
+function calculatePointsPerHour() {
+  return developers * 60 * 60; // Assuming 60 minutes in an hour and 60 seconds in a minute
+}
