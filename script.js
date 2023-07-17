@@ -9,23 +9,19 @@ const developersElement = document.getElementById("developers");
 const gameListElement = document.getElementById("gameList");
 
 // Update Points
-function updatePoints() {
-  pointsElement.textContent = points;
-}
+const updatePoints = () => pointsElement.textContent = points;
 
 // Increment Points
-function incrementPoints() {
+const incrementPoints = () => {
   points++;
   updatePoints();
-}
+};
 
 // Update Developers
-function updateDevelopers() {
-  developersElement.textContent = developers;
-}
+const updateDevelopers = () => developersElement.textContent = developers;
 
 // Hire Developer
-function hireDeveloper() {
+const hireDeveloper = () => {
   if (points >= 10) {
     points -= 10;
     developers++;
@@ -34,10 +30,10 @@ function hireDeveloper() {
   } else {
     alert("Insufficient points to hire a developer!");
   }
-}
+};
 
 // Create Game
-function createGame() {
+const createGame = () => {
   const gameName = document.getElementById("gameName").value.trim();
   
   if (gameName === "") {
@@ -55,10 +51,10 @@ function createGame() {
   document.getElementById("gameName").value = "";
 
   updateGameList();
-}
+};
 
 // Update Game List
-function updateGameList() {
+const updateGameList = () => {
   gameListElement.innerHTML = "";
 
   games.forEach((game, index) => {
@@ -67,10 +63,10 @@ function updateGameList() {
 
     gameListElement.appendChild(gameItem);
   });
-}
+};
 
 // Automatic points generation by developers every second
-setInterval(function() {
+setInterval(() => {
   points += developers;
   
   games.forEach((game) => {
@@ -82,16 +78,14 @@ setInterval(function() {
 }, 1000);
 
 // Autosave every 5 seconds
-setInterval(function() {
-  saveGame();
-}, 5000);
+setInterval(saveGame, 5000);
 
 // Save game data
 function saveGame() {
   const saveData = {
-    points: points,
-    developers: developers,
-    games: games
+    points,
+    developers,
+    games
   };
 
   localStorage.setItem("idleGameSave", JSON.stringify(saveData));
@@ -115,7 +109,7 @@ function loadGame() {
 // ...
 
 // Toggle HD Mode
-function toggleHDMode() {
+const toggleHDMode = () => {
   isHDMode = !isHDMode; // Toggle the HD Mode
 
   // Adjust button text based on the current mode
@@ -131,12 +125,9 @@ function toggleHDMode() {
   const bodyElement = document.body;
   bodyElement.classList.remove("hd-resolution", "low-resolution");
   bodyElement.classList.add(isHDMode ? "hd-resolution" : "low-resolution");
-}
+};
 
 // ...
 
-
 // Load saved game data on page load
-window.addEventListener("load", function() {
-  loadGame();
-});
+window.addEventListener("load", loadGame);
