@@ -1,6 +1,7 @@
 let points = 0;
 let developers = 0;
 let games = [];
+let isHDMode = false; // Variable to track HD Mode
 
 // Elements
 const pointsElement = document.getElementById("points");
@@ -46,7 +47,7 @@ function createGame() {
   
   const game = {
     name: gameName,
-    pointsPerDeveloper: 2,
+    pointsPerDeveloper: isHDMode ? 5 : 2, // Adjust pointsPerDeveloper based on HD Mode
     pointsGenerated: 0
   };
   
@@ -110,6 +111,20 @@ function loadGame() {
     updateDevelopers();
     updateGameList();
   }
+}
+
+// Toggle HD Mode
+function toggleHDMode() {
+  isHDMode = !isHDMode; // Toggle the HD Mode
+  
+  // Adjust button text based on the current mode
+  const toggleButton = document.getElementById("hdModeToggle");
+  toggleButton.textContent = isHDMode ? "Switch to Low Res" : "Switch to HD";
+
+  // Adjust pointsPerDeveloper for existing games based on the current mode
+  games.forEach((game) => {
+    game.pointsPerDeveloper = isHDMode ? 5 : 2;
+  });
 }
 
 // Load saved game data on page load
