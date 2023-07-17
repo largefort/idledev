@@ -9,19 +9,28 @@ const developersElement = document.getElementById("developers");
 const gameListElement = document.getElementById("gameList");
 
 // Update Points
-const updatePoints = () => pointsElement.textContent = points;
+function updatePoints() {
+  pointsElement.textContent = formatPoints(points);
+}
+
+// Format Points
+function formatPoints(value) {
+  return value >= 1e6 ? (value / 1e6).toFixed(1) + 'M' : value;
+}
 
 // Increment Points
-const incrementPoints = () => {
+function incrementPoints() {
   points++;
   updatePoints();
-};
+}
 
 // Update Developers
-const updateDevelopers = () => developersElement.textContent = developers;
+function updateDevelopers() {
+  developersElement.textContent = formatPoints(developers);
+}
 
 // Hire Developer
-const hireDeveloper = () => {
+function hireDeveloper() {
   if (points >= 10) {
     points -= 10;
     developers++;
@@ -30,10 +39,10 @@ const hireDeveloper = () => {
   } else {
     alert("Insufficient points to hire a developer!");
   }
-};
+}
 
 // Create Game
-const createGame = () => {
+function createGame() {
   const gameName = document.getElementById("gameName").value.trim();
   
   if (gameName === "") {
@@ -51,22 +60,22 @@ const createGame = () => {
   document.getElementById("gameName").value = "";
 
   updateGameList();
-};
+}
 
 // Update Game List
-const updateGameList = () => {
+function updateGameList() {
   gameListElement.innerHTML = "";
 
   games.forEach((game, index) => {
     const gameItem = document.createElement("li");
-    gameItem.textContent = `${game.name} (Points Generated: ${game.pointsGenerated})`;
+    gameItem.textContent = `${game.name} (Points Generated: ${formatPoints(game.pointsGenerated)})`;
 
     gameListElement.appendChild(gameItem);
   });
-};
+}
 
 // Automatic points generation by developers every second
-setInterval(() => {
+setInterval(function() {
   points += developers;
   
   games.forEach((game) => {
@@ -78,14 +87,16 @@ setInterval(() => {
 }, 1000);
 
 // Autosave every 5 seconds
-setInterval(saveGame, 5000);
+setInterval(function() {
+  saveGame();
+}, 5000);
 
 // Save game data
 function saveGame() {
   const saveData = {
-    points,
-    developers,
-    games
+    points: points,
+    developers: developers,
+    games: games
   };
 
   localStorage.setItem("idleGameSave", JSON.stringify(saveData));
@@ -109,7 +120,7 @@ function loadGame() {
 // ...
 
 // Toggle HD Mode
-const toggleHDMode = () => {
+function toggleHDMode() {
   isHDMode = !isHDMode; // Toggle the HD Mode
 
   // Adjust button text based on the current mode
@@ -125,9 +136,11 @@ const toggleHDMode = () => {
   const bodyElement = document.body;
   bodyElement.classList.remove("hd-resolution", "low-resolution");
   bodyElement.classList.add(isHDMode ? "hd-resolution" : "low-resolution");
-};
+}
 
 // ...
 
 // Load saved game data on page load
-window.addEventListener("load", loadGame);
+window.addEventListener("load", function() {
+  loadGame();
+});
