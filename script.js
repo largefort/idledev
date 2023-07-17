@@ -2,7 +2,7 @@ let points = 0;
 let developers = 0;
 let games = [];
 let isHDMode = false; // Variable to track HD Mode
-let pointsPerHour = 0;
+let pointsPerSecond = 0;
 
 // Elements
 const pointsElement = document.getElementById("points");
@@ -12,8 +12,8 @@ const gameListElement = document.getElementById("gameList");
 // Update Points
 function updatePoints() {
   pointsElement.textContent = formatPoints(points);
-  pointsPerHour = calculatePointsPerHour();
-  document.getElementById("pointsPerHour").textContent = formatPoints(pointsPerHour);
+  pointsPerSecond = calculatePointsPerSecond();
+  document.getElementById("pointsPerSecond").textContent = formatPoints(pointsPerSecond);
 }
 
 // Format Points
@@ -25,13 +25,15 @@ function formatPoints(value) {
 function incrementPoints() {
   points++;
   updatePoints();
+  pointsPerSecond = calculatePointsPerSecond();
+  document.getElementById("pointsPerSecond").textContent = formatPoints(pointsPerSecond);
 }
 
 // Update Developers
 function updateDevelopers() {
   developersElement.textContent = formatPoints(developers);
-  pointsPerHour = calculatePointsPerHour();
-  document.getElementById("pointsPerHour").textContent = formatPoints(pointsPerHour);
+  pointsPerSecond = calculatePointsPerSecond();
+  document.getElementById("pointsPerSecond").textContent = formatPoints(pointsPerSecond);
 }
 
 // Hire Developer
@@ -91,63 +93,16 @@ setInterval(function() {
   updateGameList();
 }, 1000);
 
-// Autosave every 5 seconds
-setInterval(function() {
-  saveGame();
-}, 5000);
+// ...
 
-// Save game data
-function saveGame() {
-  const saveData = {
-    points: points,
-    developers: developers,
-    games: games
-  };
-
-  localStorage.setItem("idleGameSave", JSON.stringify(saveData));
+// Calculate Points per Second
+function calculatePointsPerSecond() {
+  return developers;
 }
 
-// Load saved game data
-function loadGame() {
-  const saveData = localStorage.getItem("idleGameSave");
-
-  if (saveData) {
-    const data = JSON.parse(saveData);
-    points = data.points;
-    developers = data.developers;
-    games = data.games;
-
-    updatePoints();
-    updateDevelopers();
-    updateGameList();
-  }
-}
-
-// Toggle HD Mode
-function toggleHDMode() {
-  isHDMode = !isHDMode; // Toggle the HD Mode
-
-  // Adjust button text based on the current mode
-  const toggleButton = document.getElementById("hdModeToggle");
-  toggleButton.textContent = isHDMode ? "Switch to Low Res" : "Switch to HD";
-
-  // Adjust pointsPerDeveloper for existing games based on the current mode
-  games.forEach((game) => {
-    game.pointsPerDeveloper = isHDMode ? 5 : 2;
-  });
-
-  // Update the body class based on the current mode
-  const bodyElement = document.body;
-  bodyElement.classList.remove("hd-resolution", "low-resolution");
-  bodyElement.classList.add(isHDMode ? "hd-resolution" : "low-resolution");
-}
+// ...
 
 // Load saved game data on page load
 window.addEventListener("load", function() {
   loadGame();
 });
-
-// Calculate Points per Hour
-function calculatePointsPerHour() {
-  return developers * 60 * 60; // Assuming 60 minutes in an hour and 60 seconds in a minute
-}
