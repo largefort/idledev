@@ -112,11 +112,12 @@ function loadGame() {
     updateGameList();
   }
 }
+// ...
 
 // Toggle HD Mode
 function toggleHDMode() {
   isHDMode = !isHDMode; // Toggle the HD Mode
-  
+
   // Adjust button text based on the current mode
   const toggleButton = document.getElementById("hdModeToggle");
   toggleButton.textContent = isHDMode ? "Switch to Low Res" : "Switch to HD";
@@ -125,7 +126,15 @@ function toggleHDMode() {
   games.forEach((game) => {
     game.pointsPerDeveloper = isHDMode ? 5 : 2;
   });
+
+  // Update the body class based on the current mode
+  const bodyElement = document.body;
+  bodyElement.classList.remove("hd-resolution", "low-resolution");
+  bodyElement.classList.add(isHDMode ? "hd-resolution" : "low-resolution");
 }
+
+// ...
+
 
 // Load saved game data on page load
 window.addEventListener("load", function() {
