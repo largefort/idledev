@@ -1,108 +1,57 @@
-let points = 0;
-let developers = 0;
-let games = [];
-let isHDMode = false; // Variable to track HD Mode
-let pointsPerSecond = 0;
+// game.js
 
-// Elements
-const pointsElement = document.getElementById("points");
-const developersElement = document.getElementById("developers");
-const gameListElement = document.getElementById("gameList");
-
-// Update Points
-function updatePoints() {
-  pointsElement.textContent = formatPoints(points);
-  pointsPerSecond = calculatePointsPerSecond();
-  document.getElementById("pointsPerSecond").textContent = formatPoints(pointsPerSecond);
+// Game initialization
+function initGame() {
+    // Initialize game state, variables, and event listeners
 }
 
-// Format Points
-function formatPoints(value) {
-  return value >= 1e6 ? (value / 1e6).toFixed(1) + 'M' : value;
+// Game loop
+function gameLoop() {
+    // Update game state
+    // Render game elements
 }
 
-// Increment Points
-function incrementPoints() {
-  points++;
-  updatePoints();
-  pointsPerSecond = calculatePointsPerSecond();
-  document.getElementById("pointsPerSecond").textContent = formatPoints(pointsPerSecond);
+// Employee class
+class Employee {
+    constructor(name, salary) {
+        this.name = name;
+        this.salary = salary;
+    }
+
+    // Additional methods and properties for the Employee class
 }
 
-// Update Developers
-function updateDevelopers() {
-  developersElement.textContent = formatPoints(developers);
-  pointsPerSecond = calculatePointsPerSecond();
-  document.getElementById("pointsPerSecond").textContent = formatPoints(pointsPerSecond);
+// Building class
+class Building {
+    constructor(name, cost, income) {
+        this.name = name;
+        this.cost = cost;
+        this.income = income;
+    }
+
+    // Additional methods and properties for the Building class
 }
 
-// Hire Developer
-function hireDeveloper() {
-  if (points >= 10) {
-    points -= 10;
-    developers++;
-    updatePoints();
-    updateDevelopers();
-  } else {
-    alert("Insufficient points to hire a developer!");
-  }
+// Function to buy a building
+function buyBuilding(building) {
+    // Deduct the cost from the player's money
+    // Increase the player's money income
+    // Add the building to the player's owned buildings
 }
 
-// Create Game
-function createGame() {
-  const gameName = document.getElementById("gameName").value.trim();
-  
-  if (gameName === "") {
-    alert("Please enter a game name!");
-    return;
-  }
-  
-  const game = {
-    name: gameName,
-    pointsPerDeveloper: isHDMode ? 5 : 2, // Adjust pointsPerDeveloper based on HD Mode
-    pointsGenerated: 0
-  };
-  
-  games.push(game);
-  document.getElementById("gameName").value = "";
-
-  updateGameList();
+// Function to save the game state
+function saveGame() {
+    // Save the game state to local storage
 }
 
-// Update Game List
-function updateGameList() {
-  gameListElement.innerHTML = "";
-
-  games.forEach((game, index) => {
-    const gameItem = document.createElement("li");
-    gameItem.textContent = `${game.name} (Points Generated: ${formatPoints(game.pointsGenerated)})`;
-
-    gameListElement.appendChild(gameItem);
-  });
+// Function to load the game state
+function loadGame() {
+    // Load the game state from local storage
 }
 
-// Automatic points generation by developers every second
-setInterval(function() {
-  points += developers;
-  
-  games.forEach((game) => {
-    game.pointsGenerated += game.pointsPerDeveloper * developers;
-  });
-  
-  updatePoints();
-  updateGameList();
-}, 1000);
-
-// ...
-
-// Calculate Points per Second
-function calculatePointsPerSecond() {
-  return developers;
+// Function to generate random building names
+function generateBuildingName() {
+    // Generate a random name for a building
 }
 
-// ...
-
-// Load saved game data on page load
-window.addEventListener("load", function() {
-  loadGame();
-});
+// Additional functions and features for the game
