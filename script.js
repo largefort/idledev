@@ -1,57 +1,78 @@
-// game.js
+// Game variables
+let money = 0;
+let gameIdeas = 0;
 
-// Game initialization
-function initGame() {
-    // Initialize game state, variables, and event listeners
+// Building data
+const buildings = [
+  { name: "Small Office", cost: 100, income: 10 },
+  { name: "Game Studio", cost: 500, income: 50 },
+  { name: "Indie Studio", cost: 1000, income: 100 },
+  { name: "AAA Studio", cost: 5000, income: 500 },
+  { name: "Game Publisher", cost: 10000, income: 1000 },
+  { name: "Gaming Convention", cost: 50000, income: 5000 },
+  { name: "Esports Arena", cost: 100000, income: 10000 },
+  // Add more buildings here
+];
+
+// Create building elements
+function createBuildings() {
+  const buildingContainer = document.getElementById("building-container");
+
+  buildings.forEach((building, index) => {
+    const buildingElem = document.createElement("div");
+    buildingElem.classList.add("building");
+    buildingElem.innerHTML = `
+      <p>${building.name}</p>
+      <p>Cost: $${building.cost}</p>
+      <p>Income: $${building.income}/s</p>
+      <button onclick="buyBuilding(${index})">Buy</button>
+    `;
+    buildingContainer.appendChild(buildingElem);
+  });
 }
 
-// Game loop
-function gameLoop() {
-    // Update game state
-    // Render game elements
+// Buy a building
+function buyBuilding(index) {
+  const building = buildings[index];
+  if (money >= building.cost) {
+    money -= building.cost;
+    // Increase income and update display
+    // You can implement this part on your own.
+    updateMoney();
+  }
 }
 
-// Employee class
-class Employee {
-    constructor(name, salary) {
-        this.name = name;
-        this.salary = salary;
-    }
-
-    // Additional methods and properties for the Employee class
+// Create a new game
+function createGame() {
+  if (gameIdeas >= 10) {
+    gameIdeas -= 10;
+    // Create a new game and add income based on the game's success
+    // You can implement this part on your own.
+    updateGameIdeas();
+  }
 }
 
-// Building class
-class Building {
-    constructor(name, cost, income) {
-        this.name = name;
-        this.cost = cost;
-        this.income = income;
-    }
-
-    // Additional methods and properties for the Building class
+// Update money display
+function updateMoney() {
+  document.getElementById("money").textContent = money;
 }
 
-// Function to buy a building
-function buyBuilding(building) {
-    // Deduct the cost from the player's money
-    // Increase the player's money income
-    // Add the building to the player's owned buildings
+// Update game ideas display
+function updateGameIdeas() {
+  document.getElementById("game-ideas").textContent = gameIdeas;
 }
 
-// Function to save the game state
-function saveGame() {
-    // Save the game state to local storage
+// Autosave feature
+function autosave() {
+  setInterval(() => {
+    // Save game data (money, gameIdeas, building data, etc.) to local storage
+    // You can implement this part on your own.
+  }, 30000); // Autosave every 30 seconds
 }
 
-// Function to load the game state
-function loadGame() {
-    // Load the game state from local storage
-}
-
-// Function to generate random building names
-function generateBuildingName() {
-    // Generate a random name for a building
-}
-
-// Additional functions and features for the game
+// Initialization
+document.getElementById("create-game-btn").addEventListener("click", createGame);
+createBuildings();
+updateMoney();
+updateGameIdeas();
+autosave();
