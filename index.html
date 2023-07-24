@@ -1,55 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Idle Game Developer Simulation</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
-  <meta name="mobile-friendly" content="true">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Tycoon</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Idle Game Developer Simulation</h1>
-  
-  <div class="container">
-    <div class="box">
-      <h2>Points</h2>
-      <div>
-        <span id="points">0</span> Points
-      </div>
-      <div>
-        <span id="pointsPerSecond">0</span> Points per Second
-      </div>
-      <button onclick="incrementPoints()">Click Me!</button>
+    <h1>Welcome to Developer Tycoon!</h1>
+    <div id="game-container">
+        <!-- Game elements will be dynamically generated here -->
     </div>
-    
-    <div class="box">
-      <h2>Developers</h2>
-      <div>
-        <span id="developers">0</span> Developers
-      </div>
-      <button onclick="hireDeveloper()">Hire</button>
-    </div>
-    
-    <div class="box">
-      <h2>Create</h2>
-      <div>
-        <input type="text" id="gameName" placeholder="Game Name">
-      </div>
-      <button onclick="createGame()">Create</button>
-    </div>
-    
-    <!-- New box for HD Mode Toggle -->
-    <div class="box">
-      <h2>HD Mode</h2>
-      <div>
-       <button id="hdModeToggle" onclick="toggleHDMode()">Switch to HD</button>
-      </div>
-    </div>
-  </div>
 
-  <div class="game-list">
-    <h2>Games</h2>
-    <ul id="gameList"></ul>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="game.js"></script>
 </body>
 </html>
