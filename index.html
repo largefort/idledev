@@ -1,28 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Game Developer Tycoon</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Idle Game Dev Tycoon</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="game-container">
-    <h1>Game Developer Tycoon</h1>
-    <div id="stats-container">
-      <p>Money: <span id="money">0</span></p>
-      <p>Game Ideas: <span id="game-ideas">0</span></p>
-    </div>
-    <div id="building-container">
-      <!-- Building buttons will be dynamically added here -->
-    </div>
-    <button id="create-game-btn">Create Game</button>
-    <div id="game-creation-container" style="display: none;">
-      <input type="text" id="game-name-input" placeholder="Enter Game Name">
-      <button id="confirm-game-btn">Confirm</button>
-      <button id="cancel-game-btn">Cancel</button>
-    </div>
-    <button id="save-btn">Save</button>
-    <button id="load-btn">Load</button>
+  <div id="container">
+    <h1>Idle Game Dev Tycoon</h1>
+    <p>Money: $<span id="money">0</span></p>
+    <p>Games Developed: <span id="games">0</span></p>
+    <p>Lines of Code: <span id="linesOfCode">0</span></p>
+    <p>Employees: <span id="employees">0</span></p>
+    <button id="developBtn">Develop Game</button>
+    <button id="hireBtn">Hire Employee ($50)</button>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
