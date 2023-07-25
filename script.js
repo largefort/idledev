@@ -57,9 +57,13 @@ function createGame() {
 
 // Confirm game creation
 function confirmGameCreation() {
-  const gameName = document.getElementById("game-name-input").value;
-  if (gameName.trim() !== "") {
-    // Create a new game with the given name and add income based on the game's success
+  const gameNameInput = document.getElementById("game-name-input");
+  const gameSuccessInput = document.getElementById("game-success-input");
+  const gameName = gameNameInput.value;
+  const gameSuccess = parseInt(gameSuccessInput.value);
+
+  if (gameName.trim() !== "" && !isNaN(gameSuccess)) {
+    // Create a new game with the given name and success level
     // You can implement this part on your own.
     // ...
 
@@ -67,6 +71,9 @@ function confirmGameCreation() {
     isCreatingGame = false;
     document.getElementById("game-creation-container").style.display = "none";
     document.getElementById("create-game-btn").disabled = false;
+
+    gameNameInput.value = "";
+    gameSuccessInput.value = "";
   }
 }
 
@@ -98,8 +105,8 @@ function saveGame() {
   const gameData = {
     money,
     gameIdeas,
-    isCreatingGame,
-    gameIncome
+    gameIncome,
+    buildings
     // Add other data that you want to save
   };
   localStorage.setItem("gameData", JSON.stringify(gameData));
@@ -113,15 +120,16 @@ function loadGame() {
     const gameData = JSON.parse(savedData);
     money = gameData.money;
     gameIdeas = gameData.gameIdeas;
-    isCreatingGame = gameData.isCreatingGame;
     gameIncome = gameData.gameIncome;
+    // Restore purchased buildings
+    buildings.forEach((building, index) => {
+      building.cost = gameData.buildings[index].cost;
+      building.income = gameData.buildings[index].income;
+    });
     // Update other variables and UI as per your game's requirements
     updateMoney();
     updateGameIdeas();
-    if (isCreatingGame) {
-      document.getElementById("game-creation-container").style.display = "block";
-      document.getElementById("create-game-btn").disabled = true;
-    }
+    createBuildings();
     alert("Game loaded!");
   } else {
     alert("No saved game found!");
