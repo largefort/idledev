@@ -1,6 +1,8 @@
 // Game variables
 let money = 0;
 let gameIdeas = 0;
+let isCreatingGame = false;
+let gameIncome = 0;
 
 // Building data
 const buildings = [
@@ -17,6 +19,7 @@ const buildings = [
 // Create building elements
 function createBuildings() {
   const buildingContainer = document.getElementById("building-container");
+  buildingContainer.innerHTML = "";
 
   buildings.forEach((building, index) => {
     const buildingElem = document.createElement("div");
@@ -36,8 +39,7 @@ function buyBuilding(index) {
   const building = buildings[index];
   if (money >= building.cost) {
     money -= building.cost;
-    // Increase income and update display
-    // You can implement this part on your own.
+    gameIncome += building.income;
     updateMoney();
   }
 }
@@ -46,10 +48,39 @@ function buyBuilding(index) {
 function createGame() {
   if (gameIdeas >= 10) {
     gameIdeas -= 10;
-    // Create a new game and add income based on the game's success
-    // You can implement this part on your own.
+    isCreatingGame = true;
+    document.getElementById("game-creation-container").style.display = "block";
+    document.getElementById("create-game-btn").disabled = true;
     updateGameIdeas();
   }
+}
+
+// Confirm game creation
+function confirmGameCreation() {
+  const gameName = document.getElementById("game-name-input").value;
+  if (gameName.trim() !== "") {
+    // Create a new game with the given name and add income based on the game's success
+    // You can implement this part on your own.
+    // ...
+
+    // Hide game creation UI
+    isCreatingGame = false;
+    document.getElementById("game-creation-container").style.display = "none";
+    document.getElementById("create-game-btn").disabled = false;
+  }
+}
+
+// Cancel game creation
+function cancelGameCreation() {
+  isCreatingGame = false;
+  document.getElementById("game-creation-container").style.display = "none";
+  document.getElementById("create-game-btn").disabled = false;
+}
+
+// Generate money based on game success
+function generateMoney() {
+  money += gameIncome;
+  updateMoney();
 }
 
 // Update money display
@@ -72,7 +103,12 @@ function autosave() {
 
 // Initialization
 document.getElementById("create-game-btn").addEventListener("click", createGame);
+document.getElementById("confirm-game-btn").addEventListener("click", confirmGameCreation);
+document.getElementById("cancel-game-btn").addEventListener("click", cancelGameCreation);
 createBuildings();
 updateMoney();
 updateGameIdeas();
 autosave();
+
+// Automatic money generation
+setInterval(generateMoney, 1000); // Generate money every second
