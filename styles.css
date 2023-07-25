@@ -13,6 +13,10 @@ h1 {
   color: #333;
 }
 
+p {
+  margin: 5px 0;
+}
+
 button {
   padding: 10px 20px;
   font-size: 16px;
@@ -28,3 +32,33 @@ button:hover {
   background-color: #0056b3;
 }
 
+#terminal {
+  height: 250px;
+  border: 1px solid #ccc;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+#codeLines {
+  font-family: monospace;
+}
+
+/* Responsive styles for larger screens */
+@media screen and (min-width: 768px) {
+  #container {
+    width: 500px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  p {
+    font-size: 16px;
+  }
+
+  button {
+    font-size: 18px;
+  }
+}
