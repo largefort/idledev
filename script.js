@@ -1,86 +1,57 @@
-document.addEventListener("DOMContentLoaded", () => {
-  let money = 0;
-  let gamesDeveloped = 0;
-  let linesOfCode = 0;
-  let employees = 0;
-  let level = 1;
-  let codeLines = "";
+let currency = 0;
+let upgradeCost = 10;
+let upgradeLevel = 1;
+let locPerCode = 5;
 
-  const moneyElement = document.getElementById("money");
-  const gamesElement = document.getElementById("games");
-  const levelElement = document.getElementById("level");
-  const codeLinesElement = document.getElementById("codeLines");
-  const employeesElement = document.getElementById("employees");
-  const developBtn = document.getElementById("developBtn");
-  const hireBtn = document.getElementById("hireBtn");
+const currencyElement = document.getElementById("currency");
+const workButton = document.getElementById("workButton");
+const upgradeButton = document.getElementById("upgradeButton");
+const upgradeLevelElement = document.getElementById("upgradeLevel");
+const codeInput = document.getElementById("codeInput");
+const runButton = document.getElementById("runButton");
 
-  const updateUI = () => {
-    moneyElement.textContent = money.toFixed(2);
-    gamesElement.textContent = gamesDeveloped;
-    levelElement.textContent = level;
-    employeesElement.textContent = employees;
-    codeLinesElement.textContent = codeLines;
+function updateCurrency() {
+  currencyElement.textContent = currency;
+}
 
-    // Scroll to the bottom of the terminal
-    codeLinesElement.scrollTop = codeLinesElement.scrollHeight;
-  };
+function updateUpgradeLevel() {
+  upgradeLevelElement.textContent = upgradeLevel;
+}
 
-  const saveGame = () => {
-    const gameData = {
-      money: money,
-      gamesDeveloped: gamesDeveloped,
-      linesOfCode: linesOfCode,
-      employees: employees,
-      level: level,
-      codeLines: codeLines,
-    };
-    localStorage.setItem("gameData", JSON.stringify(gameData));
-  };
+function generateRandomCodeLines() {
+  const linesOfCode = Math.floor(Math.random() * 5) + 1; // Generate between 1 to 5 lines of code
+  return "function exampleFunction() {\n" + "  // Your code here...\n".repeat(linesOfCode) + "}";
+}
 
-  const developGame = () => {
-    const developmentCost = Math.ceil(10 * Math.pow(1.1, gamesDeveloped)); // Cost increases with each game developed
-    if (linesOfCode >= developmentCost) {
-      linesOfCode -= developmentCost;
-      money += developmentCost * 0.1; // Earn $0.1 for each line of code developed
-      gamesDeveloped++;
-      codeLines += `Game ${gamesDeveloped} developed: ${developmentCost} lines of code\n`;
-      updateUI();
+function work() {
+  const generatedCode = generateRandomCodeLines();
+  codeInput.value = generatedCode;
+  runCode(); // Automatically run the generated code
+}
 
-      // Save the player's progress in localStorage
-      saveGame();
-    } else {
-      alert("Not enough lines of code to develop a game!");
-    }
-  };
-
-  const hireEmployee = () => {
-    if (money >= 50) {
-      money -= 50;
-      employees++;
-      updateUI();
-      saveGame();
-    } else {
-      alert("Not enough money to hire an employee!");
-    }
-  };
-
-  // Load player progress from localStorage (if available)
-  const savedData = JSON.parse(localStorage.getItem("gameData"));
-  if (savedData) {
-    money = savedData.money;
-    gamesDeveloped = savedData.gamesDeveloped;
-    linesOfCode = savedData.linesOfCode;
-    employees = savedData.employees;
-    level = savedData.level;
-    codeLines = savedData.codeLines || "";
+function upgrade() {
+  if (currency >= upgradeCost) {
+    currency -= upgradeCost;
+    locPerCode += upgradeLevel;
+    upgradeLevel++;
+    upgradeCost *= 2;
+    updateCurrency();
+    updateUpgradeLevel();
+  } else {
+    alert("Not enough LOC to purchase the upgrade!");
   }
+}
 
-  // Update UI with the initial values
-  updateUI();
+function runCode() {
+  const code = codeInput.value.trim();
+  if (code) {
+    const linesOfCodeEarned = code.length * locPerCode;
+    currency += linesOfCodeEarned;
+    updateCurrency();
+    codeInput.value = "";
+  }
+}
 
-  // Handle the click event on the Develop Game button
-  developBtn.addEventListener("click", developGame);
-
-  // Handle the click event on the Hire Employee button
-  hireBtn.addEventListener("click", hireEmployee);
-});
+workButton.addEventListener("click", work);
+upgradeButton.addEventListener("click", upgrade);
+runButton.addEventListener("click", runCode);
