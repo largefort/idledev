@@ -93,22 +93,50 @@ function updateGameIdeas() {
   document.getElementById("game-ideas").textContent = gameIdeas;
 }
 
-// Autosave feature
-function autosave() {
-  setInterval(() => {
-    // Save game data (money, gameIdeas, building data, etc.) to local storage
-    // You can implement this part on your own.
-  }, 30000); // Autosave every 30 seconds
+// Save game data to Local Storage
+function saveGame() {
+  const gameData = {
+    money,
+    gameIdeas,
+    isCreatingGame,
+    gameIncome
+    // Add other data that you want to save
+  };
+  localStorage.setItem("gameData", JSON.stringify(gameData));
+  alert("Game saved!");
+}
+
+// Load game data from Local Storage
+function loadGame() {
+  const savedData = localStorage.getItem("gameData");
+  if (savedData) {
+    const gameData = JSON.parse(savedData);
+    money = gameData.money;
+    gameIdeas = gameData.gameIdeas;
+    isCreatingGame = gameData.isCreatingGame;
+    gameIncome = gameData.gameIncome;
+    // Update other variables and UI as per your game's requirements
+    updateMoney();
+    updateGameIdeas();
+    if (isCreatingGame) {
+      document.getElementById("game-creation-container").style.display = "block";
+      document.getElementById("create-game-btn").disabled = true;
+    }
+    alert("Game loaded!");
+  } else {
+    alert("No saved game found!");
+  }
 }
 
 // Initialization
 document.getElementById("create-game-btn").addEventListener("click", createGame);
 document.getElementById("confirm-game-btn").addEventListener("click", confirmGameCreation);
 document.getElementById("cancel-game-btn").addEventListener("click", cancelGameCreation);
+document.getElementById("save-btn").addEventListener("click", saveGame);
+document.getElementById("load-btn").addEventListener("click", loadGame);
 createBuildings();
 updateMoney();
 updateGameIdeas();
-autosave();
 
 // Automatic money generation
 setInterval(generateMoney, 1000); // Generate money every second
