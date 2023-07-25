@@ -3,10 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
   let gamesDeveloped = 0;
   let linesOfCode = 0;
   let employees = 0;
+  let level = 1;
+  let codeLines = "";
 
   const moneyElement = document.getElementById("money");
   const gamesElement = document.getElementById("games");
-  const linesOfCodeElement = document.getElementById("linesOfCode");
+  const levelElement = document.getElementById("level");
+  const codeLinesElement = document.getElementById("codeLines");
   const employeesElement = document.getElementById("employees");
   const developBtn = document.getElementById("developBtn");
   const hireBtn = document.getElementById("hireBtn");
@@ -18,24 +21,32 @@ document.addEventListener("DOMContentLoaded", () => {
     gamesDeveloped = savedData.gamesDeveloped;
     linesOfCode = savedData.linesOfCode;
     employees = savedData.employees;
+    level = savedData.level;
+    codeLines = savedData.codeLines || "";
   }
 
   // Update UI with the initial values
-  moneyElement.textContent = money;
+  moneyElement.textContent = money.toFixed(2); // Display money with two decimal places
   gamesElement.textContent = gamesDeveloped;
-  linesOfCodeElement.textContent = linesOfCode;
+  levelElement.textContent = level;
   employeesElement.textContent = employees;
+  codeLinesElement.textContent = codeLines;
 
   // Handle the click event on the Develop Game button
   developBtn.addEventListener("click", () => {
-    const linesDeveloped = employees * 10; // Each employee develops 10 lines of code
-    linesOfCode += linesDeveloped;
-    money += linesDeveloped * 0.1; // Earn $0.1 for each line of code developed
-    gamesDeveloped++;
-    updateUI();
+    const developmentCost = Math.ceil(10 * Math.pow(1.1, gamesDeveloped)); // Cost increases with each game developed
+    if (linesOfCode >= developmentCost) {
+      linesOfCode -= developmentCost;
+      money += developmentCost * 0.1; // Earn $0.1 for each line of code developed
+      gamesDeveloped++;
+      codeLines += `Game ${gamesDeveloped} developed: ${developmentCost} lines of code\n`;
+      updateUI();
 
-    // Save the player's progress in localStorage
-    saveGame();
+      // Save the player's progress in localStorage
+      saveGame();
+    } else {
+      alert("Not enough lines of code to develop a game!");
+    }
   });
 
   // Handle the click event on the Hire Employee button
@@ -52,10 +63,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Function to update the UI
   function updateUI() {
-    moneyElement.textContent = money.toFixed(2); // Display money with two decimal places
+    moneyElement.textContent = money.toFixed(2);
     gamesElement.textContent = gamesDeveloped;
-    linesOfCodeElement.textContent = linesOfCode;
+    levelElement.textContent = level;
     employeesElement.textContent = employees;
+    codeLinesElement.textContent = codeLines;
+
+    // Scroll to the bottom of the terminal
+    codeLinesElement.scrollTop = codeLinesElement.scrollHeight;
   }
 
   // Function to save the game progress in localStorage
@@ -65,10 +80,9 @@ document.addEventListener("DOMContentLoaded", () => {
       gamesDeveloped: gamesDeveloped,
       linesOfCode: linesOfCode,
       employees: employees,
+      level: level,
+      codeLines: codeLines,
     };
     localStorage.setItem("gameData", JSON.stringify(gameData));
   }
 });
-
-// Automatic money generation
-setInterval(generateMoney, 1000); // Generate money every second
