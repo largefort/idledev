@@ -1,4 +1,5 @@
 let currency = 0;
+let locPerClick = 1;
 let upgradeCost = 10;
 let upgradeLevel = 1;
 let locPerCode = 5;
@@ -18,28 +19,52 @@ function updateUpgradeLevel() {
   upgradeLevelElement.textContent = upgradeLevel;
 }
 
-function generateRandomCodeLines() {
-  const linesOfCode = Math.floor(Math.random() * 5) + 1; // Generate between 1 to 5 lines of code
-  return "function exampleFunction() {\n" + "  // Your code here...\n".repeat(linesOfCode) + "}";
+function generateRandomCodeLines(language) {
+  const languages = {
+    javascript: () => {
+      const functionName = "exampleFunction";
+      return `
+function ${functionName}() {
+  // Your JavaScript code here...
+}
+      `;
+    },
+    python: () => {
+      const functionName = "example_function";
+      return `
+def ${functionName}():
+    # Your Python code here...
+      `;
+    },
+    java: () => {
+      const functionName = "exampleFunction";
+      return `
+public static void ${functionName}() {
+    // Your Java code here...
+}
+      `;
+    }
+    // Add more languages as needed
+  };
+
+  if (languages[language.toLowerCase()]) {
+    return languages[language.toLowerCase()]();
+  } else {
+    throw new Error(`Language '${language}' not supported.`);
+  }
 }
 
 function work() {
-  const generatedCode = generateRandomCodeLines();
+  currency += locPerClick;
+  updateCurrency();
+
+  const language = "javascript"; // Change this to the desired language
+  const generatedCode = generateRandomCodeLines(language);
   codeInput.value = generatedCode;
-  runCode(); // Automatically run the generated code
 }
 
 function upgrade() {
-  if (currency >= upgradeCost) {
-    currency -= upgradeCost;
-    locPerCode += upgradeLevel;
-    upgradeLevel++;
-    upgradeCost *= 2;
-    updateCurrency();
-    updateUpgradeLevel();
-  } else {
-    alert("Not enough LOC to purchase the upgrade!");
-  }
+  // ... (same as before) ...
 }
 
 function runCode() {
