@@ -14,26 +14,30 @@ document.addEventListener("DOMContentLoaded", () => {
   const developBtn = document.getElementById("developBtn");
   const hireBtn = document.getElementById("hireBtn");
 
-  // Load player progress from localStorage (if available)
-  const savedData = JSON.parse(localStorage.getItem("gameData"));
-  if (savedData) {
-    money = savedData.money;
-    gamesDeveloped = savedData.gamesDeveloped;
-    linesOfCode = savedData.linesOfCode;
-    employees = savedData.employees;
-    level = savedData.level;
-    codeLines = savedData.codeLines || "";
-  }
+  const updateUI = () => {
+    moneyElement.textContent = money.toFixed(2);
+    gamesElement.textContent = gamesDeveloped;
+    levelElement.textContent = level;
+    employeesElement.textContent = employees;
+    codeLinesElement.textContent = codeLines;
 
-  // Update UI with the initial values
-  moneyElement.textContent = money.toFixed(2); // Display money with two decimal places
-  gamesElement.textContent = gamesDeveloped;
-  levelElement.textContent = level;
-  employeesElement.textContent = employees;
-  codeLinesElement.textContent = codeLines;
+    // Scroll to the bottom of the terminal
+    codeLinesElement.scrollTop = codeLinesElement.scrollHeight;
+  };
 
-  // Handle the click event on the Develop Game button
-  developBtn.addEventListener("click", () => {
+  const saveGame = () => {
+    const gameData = {
+      money: money,
+      gamesDeveloped: gamesDeveloped,
+      linesOfCode: linesOfCode,
+      employees: employees,
+      level: level,
+      codeLines: codeLines,
+    };
+    localStorage.setItem("gameData", JSON.stringify(gameData));
+  };
+
+  const developGame = () => {
     const developmentCost = Math.ceil(10 * Math.pow(1.1, gamesDeveloped)); // Cost increases with each game developed
     if (linesOfCode >= developmentCost) {
       linesOfCode -= developmentCost;
@@ -47,10 +51,9 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       alert("Not enough lines of code to develop a game!");
     }
-  });
+  };
 
-  // Handle the click event on the Hire Employee button
-  hireBtn.addEventListener("click", () => {
+  const hireEmployee = () => {
     if (money >= 50) {
       money -= 50;
       employees++;
@@ -59,30 +62,25 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       alert("Not enough money to hire an employee!");
     }
-  });
+  };
 
-  // Function to update the UI
-  function updateUI() {
-    moneyElement.textContent = money.toFixed(2);
-    gamesElement.textContent = gamesDeveloped;
-    levelElement.textContent = level;
-    employeesElement.textContent = employees;
-    codeLinesElement.textContent = codeLines;
-
-    // Scroll to the bottom of the terminal
-    codeLinesElement.scrollTop = codeLinesElement.scrollHeight;
+  // Load player progress from localStorage (if available)
+  const savedData = JSON.parse(localStorage.getItem("gameData"));
+  if (savedData) {
+    money = savedData.money;
+    gamesDeveloped = savedData.gamesDeveloped;
+    linesOfCode = savedData.linesOfCode;
+    employees = savedData.employees;
+    level = savedData.level;
+    codeLines = savedData.codeLines || "";
   }
 
-  // Function to save the game progress in localStorage
-  function saveGame() {
-    const gameData = {
-      money: money,
-      gamesDeveloped: gamesDeveloped,
-      linesOfCode: linesOfCode,
-      employees: employees,
-      level: level,
-      codeLines: codeLines,
-    };
-    localStorage.setItem("gameData", JSON.stringify(gameData));
-  }
+  // Update UI with the initial values
+  updateUI();
+
+  // Handle the click event on the Develop Game button
+  developBtn.addEventListener("click", developGame);
+
+  // Handle the click event on the Hire Employee button
+  hireBtn.addEventListener("click", hireEmployee);
 });
