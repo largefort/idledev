@@ -3,32 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Idle Developer Game</title>
+  <title>Idea Code Generator</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>Idle Developer Game</h1>
-    <div class="game">
-      <p>
-        You have <span id="currency">0</span> Lines of Code (LOC).
-      </p>
-      <div class="terminal">
-        <textarea id="codeInput" placeholder="Write code here..."></textarea>
-        <button id="runButton">Run Code</button>
-      </div>
-      <button id="workButton">Work</button>
-      <button id="upgradeButton">Upgrade</button>
-      <p>
-        Upgrades: <span id="upgradeLevel">1</span>
-      </p>
-      <p>
-        Achievements:
-        <ul id="achievements">
-          <li id="firstAchievement">Unlock First Achievement</li>
-        </ul>
-      </p>
-    </div>
+    <h1>Idea Code Generator</h1>
+    <textarea id="userInput" placeholder="Enter your inspiration and ideas..."></textarea>
+    <button onclick="generateCode()">Generate Code</button>
+    <div id="output"></div>
   </div>
   <script src="script.js"></script>
 </body>
