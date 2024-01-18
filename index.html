@@ -4,6 +4,44 @@
   <title>Idle Game Developer Simulation</title>
   <link rel="stylesheet" type="text/css" href="styles.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: stretch;
+      gap: 20px;
+      margin: 20px;
+    }
+    
+    .box {
+      flex: 0 1 300px;
+      padding: 20px;
+      background-color: #f1f1f1;
+      border-radius: 5px;
+      text-align: center;
+    }
+    
+    .box-title {
+      margin-top: 0;
+    }
+    
+    .box-content {
+      margin-bottom: 10px;
+    }
+    
+    .box-button {
+      padding: 10px 20px;
+    }
+    
+    .warning {
+      display: none;
+      padding: 10px;
+      background-color: #ffcc00;
+      color: #333;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
   <h1>Idle Game Developer Simulation</h1>
@@ -32,15 +70,14 @@
       </div>
       <button class="box-button" onclick="createGame()">Create Game</button>
     </div>
-    
-    <div class="box">
-      <h2 class="box-title">Save and Load</h2>
-      <div class="box-content">
-        <button class="box-button" onclick="saveGame()">Save Game</button>
-        <button class="box-button" onclick="loadGame()">Load Game</button>
-      </div>
-    </div>
   </div>
+
+  <div class="container">
+    <button class="box-button" onclick="saveData()">Save</button>
+    <button class="box-button" onclick="loadData()">Load</button>
+  </div>
+
+  <div id="autosave-warning" class="warning">Autosave: Game saved!</div>
 
   <script src="script.js"></script>
 </body>
