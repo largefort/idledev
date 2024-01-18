@@ -1,18 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
+  <title>Idle Game Developer Simulation</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Idea Code Generator</title>
-  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <h1>Idle Game Developer Simulation</h1>
+  
   <div class="container">
-    <h1>Idea Code Generator</h1>
-    <textarea id="userInput" placeholder="Enter your inspiration and ideas..."></textarea>
-    <button onclick="generateCode()">Generate Code</button>
-    <div id="output"></div>
+    <div class="box">
+      <h2 class="box-title">Points</h2>
+      <div class="box-content">
+        <span id="points">0</span> Points
+      </div>
+      <button class="box-button" onclick="incrementPoints()">Click Me!</button>
+    </div>
+    
+    <div class="box">
+      <h2 class="box-title">Developers</h2>
+      <div class="box-content">
+        <span id="developers">0</span> Developers
+      </div>
+      <button class="box-button" onclick="hireDeveloper()">Hire Developer (Cost: 10 points)</button>
+    </div>
+    
+    <div class="box">
+      <h2 class="box-title">Create a Game</h2>
+      <div class="box-content">
+        <input type="text" id="gameName" placeholder="Game Name">
+      </div>
+      <button class="box-button" onclick="createGame()">Create Game</button>
+    </div>
+    
+    <div class="box">
+      <h2 class="box-title">Save and Load</h2>
+      <div class="box-content">
+        <button class="box-button" onclick="saveGame()">Save Game</button>
+        <button class="box-button" onclick="loadGame()">Load Game</button>
+      </div>
+    </div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
